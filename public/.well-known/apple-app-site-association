@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["YWSHDN5Y3H.com.quynhfe.tachtach"],
+        "components": [
+          {
+            "/": "/t/*",
+            "comment": "Chi link bo suu tap moi mo thang trong app; con lai giu tren web"
+          }
+        ]
+      }
+    ]
+  }
+}
