@@ -1,0 +1,394 @@
+/* ---------------------------------------------------------------------------
+   Token màu lấy từ `tailwind.config.js` / `src/lib/theme.ts` của app để web và
+   app nói cùng một ngôn ngữ thiết kế. Trang này nhỏ nên dùng CSS thuần, không
+   kéo cả Tailwind vào cho một màn hình.
+   --------------------------------------------------------------------------- */
+:root {
+  --cream: #fffdf8;
+  --card: #ffffff;
+  --ink: #586048;
+  --muted: #9fa3a7;
+  --brand: #82be57;
+  --brand-dark: #5f9a3c;
+  --brand-soft: #ddefcb;
+  --hairline: #e2e3e1;
+  --stamp: #ffa63e;
+  --heart: #f08fb2;
+
+  --place-1: #82be57;
+  --place-2: #f08fb2;
+  --place-3: #80b4ee;
+  --place-4: #c4a0ee;
+  --place-5: #f1be82;
+  --place-6: #f7c84b;
+
+  --banner-height: 76px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-quicksand), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Chừa chỗ cho banner "Mở trong app" dính đáy, khỏi che ảnh cuối trang. */
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px calc(var(--banner-height) + 32px);
+}
+
+/* --- Header ---------------------------------------------------------------- */
+.masthead {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brand-dark);
+  letter-spacing: 0.02em;
+}
+
+.share-title {
+  margin: 10px 0 0;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.share-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.share-meta .expiry {
+  color: var(--stamp);
+}
+
+.rule {
+  height: 1px;
+  border: 0;
+  background: var(--hairline);
+  margin: 24px 0 4px;
+}
+
+/* --- Ngày & địa điểm -------------------------------------------------------- */
+.day-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 32px 0 18px;
+}
+
+.day-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.day-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.stop {
+  margin-bottom: 30px;
+}
+
+.stop-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.stop-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+.stop-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.stop-time {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.stop-place {
+  margin: 0 0 12px 20px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* --- Lưới ảnh kiểu scrapbook ------------------------------------------------ */
+.grid {
+  columns: 2;
+  column-gap: 12px;
+}
+
+@media (min-width: 560px) {
+  .grid {
+    columns: 3;
+  }
+}
+
+.photo {
+  break-inside: avoid;
+  margin: 0 0 12px;
+  background: var(--card);
+  border-radius: 6px;
+  padding: 6px 6px 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.photo .frame {
+  position: relative;
+}
+
+.photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+  background: var(--brand-soft);
+}
+
+/* Dấu giờ kiểu datestamp máy film — cam cháy, không đổ bóng (đè trên ảnh). */
+.film-stamp {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--stamp);
+}
+
+.caption {
+  margin: 7px 2px 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+/* --- Trạng thái rỗng / lỗi -------------------------------------------------- */
+.notice {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.notice h1 {
+  font-size: 22px;
+  margin: 0;
+}
+
+.notice p {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* --- Banner "Mở trong app" -------------------------------------------------- */
+.app-banner {
+  position: fixed;
+  inset: auto 0 0 0;
+  height: var(--banner-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 20px;
+  background: var(--card);
+  border-top: 1px solid var(--hairline);
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.app-banner .text {
+  min-width: 0;
+}
+
+.app-banner .title {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.app-banner .sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 2px 0 0;
+}
+
+.app-banner a {
+  flex: 0 0 auto;
+  background: var(--brand);
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 11px 20px;
+}
+
+/* --- Toggle Nhật ký ⇄ Bản đồ ------------------------------------------------ */
+.view-toggle {
+  display: inline-flex;
+  gap: 4px;
+  margin: 20px 0 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: #eef0ec;
+}
+
+.view-toggle button {
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  background: transparent;
+}
+
+.view-toggle button.active {
+  background: var(--brand);
+  color: #fff;
+}
+
+/* --- Bản đồ ----------------------------------------------------------------- */
+.map-wrap {
+  position: relative;
+  margin-top: 18px;
+}
+
+.map-canvas {
+  height: min(70vh, 560px);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--brand-soft);
+}
+
+.map-missing {
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 24px;
+  border-radius: 16px;
+  background: #eef0ec;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.map-blur-note {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+/* Pin = ảnh tròn viền trắng + nhãn tên, khớp PhotoMarker của app. */
+.map-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: default;
+}
+
+.map-pin-photo {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 999px;
+  border: 3px solid #fff;
+  overflow: visible;
+  background: var(--brand-soft);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
+}
+
+.map-pin-photo img {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  object-fit: cover;
+  display: block;
+}
+
+.map-pin-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  background: var(--pin-color);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 17px;
+  text-align: center;
+}
+
+.map-pin-label {
+  margin-top: 4px;
+  max-width: 92px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 999px;
+  background: var(--cream);
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink);
+}
