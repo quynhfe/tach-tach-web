@@ -62,3 +62,4 @@ Khi có Apple Team ID và SHA-256 của keystore Android thì thêm hai file tĩ
 - `public/.well-known/assetlinks.json`
 
 rồi khai `ios.associatedDomains` + `android.intentFilters` bên `app.json` của app.
+# tach-tach-web
