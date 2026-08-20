@@ -1,3 +1,5 @@
+import { BrandMark } from '@/components/brand-mark'
+
 /**
  * Banner dính đáy. Link store để trống tới khi app lên store thật — lúc đó điền
  * `NEXT_PUBLIC_APP_STORE_URL`, chưa có thì banner chỉ còn lời giới thiệu, không
@@ -8,6 +10,7 @@ export function AppBanner() {
 
   return (
     <div className="app-banner">
+      <BrandMark size={34} wordmark={false} />
       <div className="text">
         <p className="title">Tách Tách</p>
         <p className="sub">Nhật ký hành trình trên bản đồ</p>

@@ -9,10 +9,15 @@ export default function ShareNotFound() {
   return (
     <>
       <main className="notice">
+        {/* Minh hoạ trang trí — câu chữ bên dưới đã nói đủ. */}
+        <img className="notice-art" src="/illust-trip.png" alt="" width={700} height={626} />
         <h1>Link không còn hợp lệ</h1>
         <p>
           Bộ sưu tập này đã hết hạn hoặc đã được gỡ. Hỏi người gửi xin link mới giúp bạn nhé.
         </p>
+        <a className="notice-link" href="/">
+          Tách Tách là gì?
+        </a>
       </main>
       <AppBanner />
     </>
