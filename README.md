@@ -3,6 +3,12 @@
 Trang web đọc-only cho link chia sẻ của app **Tách Tách**: `https://<domain>/t/<slug>`.
 Người nhận link xem được album mà **không cần cài app, không cần đăng nhập**.
 
+Hai lăng kính như trong app: **Nhật ký** (ảnh theo ngày và địa điểm) và **Bản đồ**.
+Bản đồ ở web là **một ảnh tĩnh** (Mapbox Static Images API) vẽ sẵn tuyến và pin —
+một request cho cả trang, không kéo thư viện map nào vào bundle, và người xem lạ
+không đốt quota map-load. Phần tương tác — phóng to, chỉ đường tới từng nơi — để
+cho app, nút dưới ảnh dẫn sang đó.
+
 Repo app: `../tach-bru`.
 
 ## Vì sao là một repo riêng
@@ -39,9 +45,13 @@ npm run build
 ## Deploy Vercel
 
 1. Push repo lên GitHub, import vào Vercel.
-2. Set env: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
-   (`NEXT_PUBLIC_APP_STORE_URL` để trống tới khi app lên store — banner tự ẩn nút.)
-3. Ghi domain vừa nhận vào `EXPO_PUBLIC_SHARE_BASE_URL` của repo app.
+2. Set env: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
+   `NEXT_PUBLIC_MAPBOX_TOKEN`.
+3. `NEXT_PUBLIC_APP_STORE_URL`: chưa lên store thì điền **link TestFlight công
+   khai** (`https://testflight.apple.com/join/XXXXXXXX`) — ai bấm cũng vào được,
+   tối đa 10.000 external tester. Để trống thì banner và nút "Chỉ đường" tự ẩn,
+   không dựng nút bấm vào hư không.
+4. Ghi domain vừa nhận vào `EXPO_PUBLIC_SHARE_BASE_URL` của repo app.
 
 ## Universal links (chưa làm)
 

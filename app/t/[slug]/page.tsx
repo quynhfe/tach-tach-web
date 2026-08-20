@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { AppBanner } from '@/components/app-banner'
+import { ShareMap } from '@/components/share-map'
 import { ShareViews } from '@/components/share-views'
 import { expiryLabel } from '@/lib/datetime'
 import { coverPhoto, getPublicShare, incrementShareView } from '@/lib/share'
@@ -64,7 +65,10 @@ export default async function SharePage({ params }: PageProps) {
         </div>
         <hr className="rule" />
 
-        <ShareViews share={share} />
+        <ShareViews
+          share={share}
+          map={<ShareMap stops={share.stops} blurLocation={share.blurLocation} />}
+        />
       </main>
       <AppBanner />
     </>

@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { PhotoGrid } from '@/components/photo-grid'
-import { ShareMap } from '@/components/share-map'
 import { formatDayShort, formatTime, ymdKey } from '@/lib/datetime'
 import { PLACE_COLORS } from '@/lib/map-geo'
 import type { PublicShare, ShareStop } from '@/lib/share'
@@ -21,10 +20,10 @@ function groupByDay(stops: ShareStop[]) {
 
 /**
  * Hai lăng kính của cùng một bộ sưu tập — feed theo ngày và bản đồ — đúng cặp
- * mà app cho người xem chọn ở màn album. Bản đồ chỉ dựng khi người xem mở tới
- * nó, để ai chỉ muốn xem ảnh không phải trả tiền băng thông cho tile.
+ * mà app cho người xem chọn ở màn album. `map` nhận từ server component nên ảnh
+ * bản đồ dựng sẵn phía máy chủ, phần client ở đây chỉ giữ trạng thái tab.
  */
-export function ShareViews({ share }: { share: PublicShare }) {
+export function ShareViews({ share, map }: { share: PublicShare; map: ReactNode }) {
   const [mode, setMode] = useState<'timeline' | 'map'>('timeline')
   const days = groupByDay(share.stops)
 
@@ -48,12 +47,7 @@ export function ShareViews({ share }: { share: PublicShare }) {
       </div>
 
       {mode === 'map' ? (
-        <div className="map-wrap">
-          <ShareMap stops={share.stops} photos={share.photos} />
-          {share.blurLocation && (
-            <span className="map-blur-note">Vị trí đã được làm mờ</span>
-          )}
-        </div>
+        map
       ) : (
         <>
           {days.length === 0 && (

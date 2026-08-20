@@ -302,11 +302,40 @@ body {
   margin-top: 18px;
 }
 
-.map-canvas {
-  height: min(70vh, 560px);
+/* aspect-ratio giữ đúng chỗ trước khi ảnh về — không thì trang giật một nhịp
+   và nút bên dưới nhảy lên đè vào tab. */
+.map-static {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 720 / 420;
+  object-fit: cover;
   border-radius: 16px;
-  overflow: hidden;
   background: var(--brand-soft);
+}
+
+/* Nút mời sang app đặt DƯỚI ảnh, không đè: đè lên thì che mất chính cái pin
+   mà người xem đang muốn nhìn. */
+.map-cta {
+  display: block;
+  margin: 14px auto 0;
+  width: fit-content;
+  background: var(--brand);
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 12px 22px;
+  box-shadow: 0 4px 14px rgba(130, 190, 87, 0.4);
+}
+
+.map-hint {
+  margin: 12px 2px 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+  text-align: center;
 }
 
 .map-missing {
