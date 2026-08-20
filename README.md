@@ -53,13 +53,24 @@ npm run build
    không dựng nút bấm vào hư không.
 4. Ghi domain vừa nhận vào `EXPO_PUBLIC_SHARE_BASE_URL` của repo app.
 
-## Universal links (chưa làm)
+## Universal links
 
-Khi có Apple Team ID và SHA-256 của keystore Android thì thêm hai file tĩnh:
+**iOS: xong.** `public/.well-known/apple-app-site-association` khai
+`YWSHDN5Y3H.com.quynhfe.tachtach` và chỉ nhận đường dẫn `/t/*` — trang chủ và các
+trang khác vẫn mở trong trình duyệt. File cố tình **không có đuôi `.json`** (Apple
+quy định), nên `next.config.mjs` ép `Content-Type: application/json` cho nó; kiểm
+lại sau mỗi lần deploy:
 
-- `public/.well-known/apple-app-site-association` — **không có đuôi `.json`**, phải
-  trả `Content-Type: application/json`
-- `public/.well-known/assetlinks.json`
+```bash
+curl -sI https://tach-tach.vercel.app/.well-known/apple-app-site-association
+# phải là 200 + application/json, KHÔNG được redirect
+```
 
-rồi khai `ios.associatedDomains` + `android.intentFilters` bên `app.json` của app.
+Đổi domain thì sửa cả `ios.associatedDomains` bên `app.json` của app, và app phải
+**build lại** — entitlement `associated-domains` được ký vào bundle, không phải
+config đọc lúc chạy.
+
+**Android: chưa.** Cần SHA-256 của keystore (`eas credentials` → Android) rồi thêm
+`public/.well-known/assetlinks.json` + `android.intentFilters`. Chưa có file này thì
+App Links không verify, link vẫn mở web bình thường.
 # tach-tach-web
