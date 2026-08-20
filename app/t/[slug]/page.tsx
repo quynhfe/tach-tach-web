@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { AppBanner } from '@/components/app-banner'
+import { BrandMark } from '@/components/brand-mark'
+import { ClockIcon, EyeIcon, HeartIcon } from '@/components/icons'
 import { ShareMap } from '@/components/share-map'
 import { ShareViews } from '@/components/share-views'
 import { expiryLabel } from '@/lib/datetime'
@@ -54,14 +56,28 @@ export default async function SharePage({ params }: PageProps) {
   return (
     <>
       <main className="page">
-        <p className="masthead">Tách Tách · bộ sưu tập chia sẻ</p>
+        <p className="masthead">
+          <BrandMark size={22} wordmark={false} />
+          <span>Tách Tách · bộ sưu tập chia sẻ</span>
+        </p>
         <h1 className="share-title">{share.name}</h1>
         <div className="share-meta">
           <span>{share.stops.length} địa điểm</span>
           <span>{share.photos.length} kỷ niệm</span>
-          <span>👁 {share.viewCount}</span>
-          <span>♡ {share.heartCount}</span>
-          {expiry && <span className="expiry">⏳ {expiry}</span>}
+          <span className="meta-stat">
+            <EyeIcon />
+            {share.viewCount}
+          </span>
+          <span className="meta-stat heart">
+            <HeartIcon />
+            {share.heartCount}
+          </span>
+          {expiry && (
+            <span className="meta-stat expiry">
+              <ClockIcon />
+              {expiry}
+            </span>
+          )}
         </div>
         <hr className="rule" />
 

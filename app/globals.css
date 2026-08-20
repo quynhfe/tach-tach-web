@@ -14,6 +14,8 @@
   --hairline: #e2e3e1;
   --stamp: #ffa63e;
   --heart: #f08fb2;
+  --pink-soft: #f8d8e4;
+  --blue-soft: #d6e8f8;
 
   --place-1: #82be57;
   --place-2: #f08fb2;
@@ -52,8 +54,9 @@ body {
 /* --- Header ---------------------------------------------------------------- */
 .masthead {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
   font-size: 13px;
   font-weight: 700;
   color: var(--brand-dark);
@@ -214,9 +217,31 @@ body {
   padding: 0 24px;
 }
 
+.notice-art {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  margin-bottom: 4px;
+}
+
 .notice h1 {
-  font-size: 22px;
   margin: 0;
+  font-family: var(--font-baloo), var(--font-quicksand), sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+}
+
+/* Lối thoát khỏi trang cụt: link hỏng thì ít nhất còn chỗ để tìm hiểu app. */
+.notice-link {
+  margin-top: 4px;
+  color: var(--brand-dark);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--brand-soft);
+  padding-bottom: 2px;
 }
 
 .notice p {
@@ -234,8 +259,7 @@ body {
   height: var(--banner-height);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   padding: 0 20px;
   background: var(--card);
   border-top: 1px solid var(--hairline);
@@ -244,6 +268,7 @@ body {
 
 .app-banner .text {
   min-width: 0;
+  margin-right: auto;
 }
 
 .app-banner .title {
@@ -420,4 +445,463 @@ body {
   font-size: 10px;
   font-weight: 600;
   color: var(--ink);
+}
+
+/* --- Nhận diện thương hiệu --------------------------------------------------- */
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-mark img {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.brand-word {
+  font-family: var(--font-baloo), var(--font-quicksand), sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+/* Đầu trang là chỗ duy nhất wordmark đứng một mình nên để lớn hẳn; ở footer và
+   banner nó chỉ là chú thích nên giữ cỡ mặc định. */
+.landing-head {
+  padding-bottom: 4px;
+}
+
+.landing-head .brand-mark {
+  gap: 14px;
+}
+
+.landing-head .brand-mark img {
+  width: min(512px, 62vw);
+  height: auto;
+}
+
+.landing-head .brand-word {
+  font-size: clamp(30px, 5.4vw, 56px);
+}
+
+/* --- Trang giới thiệu (gốc domain) ------------------------------------------ */
+/* Hai vệt màu rất nhạt sau nội dung cho nền cream đỡ phẳng; đặt ở body qua
+   ::before nên không chen vào luồng bố cục. */
+.landing {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.landing::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: -180px;
+  right: -140px;
+  width: 460px;
+  height: 460px;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  opacity: 0.5;
+  filter: blur(10px);
+}
+
+.landing::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  bottom: -200px;
+  left: -160px;
+  width: 420px;
+  height: 420px;
+  border-radius: 999px;
+  background: var(--pink-soft);
+  opacity: 0.45;
+  filter: blur(10px);
+}
+
+.landing > * {
+  position: relative;
+  z-index: 1;
+}
+
+.landing-head {
+  max-width: 1040px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 22px 24px;
+}
+
+.landing main {
+  flex: 1;
+  max-width: 1040px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.hero {
+  display: grid;
+  gap: 32px;
+  align-items: center;
+  padding: 16px 0 8px;
+}
+
+@media (min-width: 860px) {
+  .hero {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 48px;
+    padding: 40px 0 24px;
+  }
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-dark);
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: var(--font-baloo), var(--font-quicksand), sans-serif;
+  font-weight: 800;
+  /* Co giãn theo bề ngang để tiêu đề không phải xuống dòng gãy trên máy nhỏ. */
+  font-size: clamp(32px, 6.4vw, 52px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.lede {
+  margin: 16px 0 0;
+  max-width: 46ch;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #6f7566;
+}
+
+.hero-actions {
+  margin-top: 26px;
+}
+
+.btn-primary,
+.btn-ghost {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 14px 26px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(130, 190, 87, 0.38);
+  transition: transform 180ms ease-out, box-shadow 180ms ease-out;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(130, 190, 87, 0.45);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Chưa lên store thì vẫn giữ chỗ bằng một nhãn — trông có chủ đích hơn là để
+   trống, và không giả làm nút bấm được. */
+.btn-ghost {
+  background: var(--brand-soft);
+  color: var(--brand-dark);
+  cursor: default;
+}
+
+.hero-note {
+  margin: 14px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 40ch;
+}
+
+.hero-art {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* --- Ba điểm bán hàng ------------------------------------------------------- */
+.features {
+  display: grid;
+  gap: 14px;
+  margin: 40px 0 32px;
+}
+
+@media (min-width: 720px) {
+  .features {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin: 56px 0 40px;
+  }
+}
+
+.feature {
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: 20px;
+  padding: 22px 20px;
+}
+
+.feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  margin-bottom: 14px;
+}
+
+.tone-brand {
+  background: var(--brand-soft);
+  color: var(--brand-dark);
+}
+
+.tone-pink {
+  background: var(--pink-soft);
+  color: #c85d84;
+}
+
+.tone-blue {
+  background: var(--blue-soft);
+  color: #4a84c4;
+}
+
+.feature h2 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.feature p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* --- Dải minh hoạ trên chân trang ------------------------------------------- */
+.sticker-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 4px 10px;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 24px 28px;
+}
+
+.sticker-strip img {
+  width: clamp(52px, 9vw, 82px);
+  height: auto;
+  /* Nghiêng xen kẽ cho ra dáng sticker dán tay, không thẳng hàng như bảng biểu.
+     Quy tắc :nth-child bên dưới lo phần nghiêng. */
+  transform-origin: bottom center;
+}
+
+.sticker-strip img:nth-child(odd) {
+  transform: rotate(-5deg);
+}
+
+.sticker-strip img:nth-child(even) {
+  transform: rotate(4deg) translateY(-4px);
+}
+
+/* Máy hẹp chỉ đủ chỗ cho bốn hình — hai hình cuối xuống hàng trông lạc lõng. */
+@media (max-width: 520px) {
+  .sticker-strip img:nth-child(n + 5) {
+    display: none;
+  }
+}
+
+.foot-name {
+  font-family: var(--font-baloo), var(--font-quicksand), sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.landing-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 12px;
+  max-width: 1040px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 24px 28px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Icon + số đi liền một cụm, icon canh theo giữa dòng chữ. */
+.meta-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.meta-stat.heart {
+  color: var(--heart);
+}
+
+/* --- Hiệu ứng --------------------------------------------------------------- */
+/* Chỉ chạy trên `transform` và `opacity` — hai thuộc tính trình duyệt xử lý
+   được trên GPU, không kéo theo tính lại bố cục. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* `backwards` giữ khung hình đầu trong lúc chờ delay, không thì phần tử loé lên
+   một nhịp rồi mới chịu ẩn đi. */
+.landing-head,
+.hero-copy > *,
+.hero-art,
+.feature {
+  animation: rise-in 460ms cubic-bezier(0.16, 0.84, 0.44, 1) backwards;
+}
+
+/* Vào lần lượt từ trên xuống, mỗi nhịp 60ms — đủ để mắt đọc ra thứ tự mà chưa
+   kịp thấy chậm. */
+.landing-head {
+  animation-delay: 40ms;
+}
+
+.hero-copy > *:nth-child(1) {
+  animation-delay: 120ms;
+}
+
+.hero-copy > *:nth-child(2) {
+  animation-delay: 180ms;
+}
+
+.hero-copy > *:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+.hero-copy > *:nth-child(4) {
+  animation-delay: 300ms;
+}
+
+.hero-art {
+  animation-delay: 260ms;
+}
+
+.feature:nth-child(1) {
+  animation-delay: 380ms;
+}
+
+.feature:nth-child(2) {
+  animation-delay: 440ms;
+}
+
+.feature:nth-child(3) {
+  animation-delay: 500ms;
+}
+
+/* Sticker đã nghiêng sẵn bằng transform nên chỉ cho hiện dần, tránh giành
+   quyền ghi lên cùng một thuộc tính. */
+.sticker-strip img {
+  animation: fade-in 520ms ease-out backwards;
+  transition: transform 220ms cubic-bezier(0.16, 0.84, 0.44, 1);
+}
+
+.sticker-strip img:nth-child(1) {
+  animation-delay: 560ms;
+}
+
+.sticker-strip img:nth-child(2) {
+  animation-delay: 610ms;
+}
+
+.sticker-strip img:nth-child(3) {
+  animation-delay: 660ms;
+}
+
+.sticker-strip img:nth-child(4) {
+  animation-delay: 710ms;
+}
+
+.sticker-strip img:nth-child(5) {
+  animation-delay: 760ms;
+}
+
+.sticker-strip img:nth-child(6) {
+  animation-delay: 810ms;
+}
+
+/* Rê chuột thì sticker nhổm lên như được nhấc khỏi trang giấy. Phải viết lại cả
+   phép quay vì transform là một thuộc tính duy nhất, ghi đè là mất sạch. */
+.sticker-strip img:nth-child(odd):hover {
+  transform: rotate(-5deg) translateY(-8px) scale(1.08);
+}
+
+.sticker-strip img:nth-child(even):hover {
+  transform: rotate(4deg) translateY(-12px) scale(1.08);
+}
+
+.feature {
+  transition: transform 220ms ease-out, box-shadow 220ms ease-out,
+    border-color 220ms ease-out;
+}
+
+.feature:hover {
+  transform: translateY(-4px);
+  border-color: var(--brand-soft);
+  box-shadow: 0 12px 28px rgba(88, 96, 72, 0.09);
+}
+
+/* Người đã tắt hiệu ứng chuyển động trong cài đặt hệ điều hành thì thấy trang
+   dựng sẵn, không có gì nhúc nhích. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
