@@ -1,0 +1,62 @@
+/* GENERATED từ tach-bru/src/shared/tokens.ts — ĐỪNG SỬA FILE NÀY.
+   Sửa màu ở NGUỒN rồi chạy `npm run sync:shared` bên repo app. */
+:root {
+  --cream: #fffdf8;
+  --map-land: #e9eedb;
+  --map-veg: #dcecd3;
+  --map-country: #c3a4b4;
+  --cream-fade: rgba(255, 253, 248, 0);
+  --canvas: #eef0ec;
+  --card: #ffffff;
+  --ink: #586048;
+  --map-label: #7f887f;
+  --muted: #9fa3a7;
+  --brand: #82be57;
+  --brand-dark: #5f9a3c;
+  --brand-link: #5f9a3c;
+  --brand-soft: #ddefcb;
+  --pink: #f08fb2;
+  --pink-soft: #f8d8e4;
+  --yellow: #f7c84b;
+  --yellow-soft: #fbe9b5;
+  --blue: #80b4ee;
+  --blue-soft: #d6e8f8;
+  --map-water: #afd8eb;
+  --map-water-soft: #dbe7ee;
+  --purple: #c4a0ee;
+  --purple-dark: #8f6bbd;
+  --purple-soft: #e8dcf7;
+  --peach: #f1be82;
+  --hairline: #e2e3e1;
+  --night: #17150f;
+  --white: #ffffff;
+  --danger: #ef4444;
+  --heart: #f08fb2;
+  --stamp: #ffa63e;
+  --scrim: rgba(0, 0, 0, 0.35);
+  --scrim-strong: rgba(0, 0, 0, 0.62);
+  --scrim-fade: rgba(0, 0, 0, 0);
+
+  --place-1: #82be57;
+  --place-2: #f08fb2;
+  --place-3: #80b4ee;
+  --place-4: #c4a0ee;
+  --place-5: #f1be82;
+  --place-6: #f7c84b;
+
+  --place-soft-1: #ddefcb;
+  --place-soft-2: #f8d8e4;
+  --place-soft-3: #d6e8f8;
+  --place-soft-4: #e8dcf7;
+  --place-soft-5: #fae8d2;
+  --place-soft-6: #fbe9b5;
+
+  --day-1: #82be57;
+  --day-2: #f08fb2;
+  --day-3: #80b4ee;
+  --day-4: #f7c84b;
+
+  --shadow-soft: 0px 8px 24px rgba(45, 64, 48, 0.1);
+  --shadow-btn: 0px 2px 8px rgba(45, 64, 48, 0.06);
+  --shadow-nav: 0px -6px 20px rgba(45, 64, 48, 0.08);
+}

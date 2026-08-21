@@ -9,7 +9,7 @@ export function AppBanner() {
   const storeUrl = process.env.NEXT_PUBLIC_APP_STORE_URL
 
   return (
-    <div className="app-banner">
+    <div className={storeUrl ? 'app-banner' : 'app-banner centered'}>
       <BrandMark size={34} wordmark={false} />
       <div className="text">
         <p className="title">Tách Tách</p>

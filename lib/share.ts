@@ -6,41 +6,9 @@ import { supabase } from '@/lib/supabase'
 // component nên ảnh được ký lại mỗi request, không cần lo presigned URL hết hạn.
 // ---------------------------------------------------------------------------
 
-export type ShareStop = {
-  id: string
-  name: string
-  arrivedAt: string
-  city: string
-  region: string
-  coverPhotoId: string | null
-  tripId: string | null
-  /** null = kỷ niệm chưa gán vị trí; RPC đã làm mờ sẵn nếu chủ share bật toggle. */
-  lat: number | null
-  lng: number | null
-}
-
-export type SharePhoto = {
-  id: string
-  stopId: string
-  url: string
-  thumbUrl: string
-  width: number
-  height: number
-  caption?: string
-  takenAt: string
-}
-
-export type PublicShare = {
-  name: string
-  slug: string
-  expiresAt: string | null
-  viewCount: number
-  heartCount: number
-  /** Chủ share bật "Làm mờ vị trí" — toạ độ về tới đây đã bị làm tròn ~1km. */
-  blurLocation: boolean
-  stops: ShareStop[]
-  photos: SharePhoto[]
-}
+// Kiểu dữ liệu dùng chung với app — bản sao sinh từ tach-bru/src/shared.
+export type { ShareStop, SharePhoto, PublicShare } from '@/lib/shared/share-types'
+import type { PublicShare, SharePhoto } from '@/lib/shared/share-types'
 
 type StopRow = {
   id: string
@@ -52,6 +20,7 @@ type StopRow = {
   trip_id: string | null
   lat: number | null
   lng: number | null
+  hidden_photo_count: number | null
 }
 
 type PhotoRow = {
@@ -124,6 +93,7 @@ export async function getPublicShare(slug: string): Promise<PublicShare | null> 
       tripId: s.trip_id,
       lat: s.lat,
       lng: s.lng,
+      hiddenPhotoCount: s.hidden_photo_count ?? 0,
     })),
     photos: photoRows.map((p) => ({
       id: p.id,

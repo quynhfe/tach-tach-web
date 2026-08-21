@@ -1,29 +1,12 @@
+@import './tokens.css';
+
 /* ---------------------------------------------------------------------------
-   Token màu lấy từ `tailwind.config.js` / `src/lib/theme.ts` của app để web và
-   app nói cùng một ngôn ngữ thiết kế. Trang này nhỏ nên dùng CSS thuần, không
-   kéo cả Tailwind vào cho một màn hình.
+   Token màu đến từ `tokens.css` — file đó do `npm run sync:shared` bên repo app
+   sinh ra từ `src/shared/tokens.ts`, nên web và app không thể lệch màu nhau.
+   Trang này nhỏ nên dùng CSS thuần, không kéo cả Tailwind vào cho một màn hình.
+   Chỉ khai ở đây những biến RIÊNG của web.
    --------------------------------------------------------------------------- */
 :root {
-  --cream: #fffdf8;
-  --card: #ffffff;
-  --ink: #586048;
-  --muted: #9fa3a7;
-  --brand: #82be57;
-  --brand-dark: #5f9a3c;
-  --brand-soft: #ddefcb;
-  --hairline: #e2e3e1;
-  --stamp: #ffa63e;
-  --heart: #f08fb2;
-  --pink-soft: #f8d8e4;
-  --blue-soft: #d6e8f8;
-
-  --place-1: #82be57;
-  --place-2: #f08fb2;
-  --place-3: #80b4ee;
-  --place-4: #c4a0ee;
-  --place-5: #f1be82;
-  --place-6: #f7c84b;
-
   --banner-height: 76px;
 }
 
@@ -207,20 +190,20 @@ body {
 
 /* --- Trạng thái rỗng / lỗi -------------------------------------------------- */
 .notice {
-  min-height: 70vh;
+  min-height: calc(100dvh - var(--banner-height));
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 14px;
   text-align: center;
-  padding: 0 24px;
+  padding: 32px 24px;
 }
 
 .notice-art {
   display: block;
   width: 100%;
-  max-width: 220px;
+  max-width: 168px;
   height: auto;
   margin-bottom: 4px;
 }
@@ -246,7 +229,7 @@ body {
 
 .notice p {
   margin: 0;
-  max-width: 34ch;
+  max-width: 44ch;
   font-size: 15px;
   color: var(--muted);
   line-height: 1.6;
@@ -269,6 +252,14 @@ body {
 .app-banner .text {
   min-width: 0;
   margin-right: auto;
+}
+
+.app-banner.centered {
+  justify-content: center;
+}
+
+.app-banner.centered .text {
+  margin-right: 0;
 }
 
 .app-banner .title {
