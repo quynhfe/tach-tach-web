@@ -212,6 +212,16 @@ export function groupJourneys<T extends GeoStop>(stops: T[]): Journey<T>[] {
   return groups.map((g, i) => ({ ...g, color: PLACE_COLORS[i % PLACE_COLORS.length] }))
 }
 
+/** Màu riêng của MỘT lần ghé — viền pin ảnh trên bản đồ. Băm từ id nên màu bám
+ *  theo lần ghé đó mãi mãi (thêm/xoá nơi khác không làm cả bản đồ đổi màu), và
+ *  hai pin cạnh nhau gần như luôn khác màu → nhìn phát biết là hai chỗ khác nhau.
+ *  Khác với stopColors: cái đó tô theo CHUYẾN, dùng cho đường nối. */
+export function stopAccentColor(stopId: string): string {
+  let h = 0
+  for (let i = 0; i < stopId.length; i++) h = (h * 31 + stopId.charCodeAt(i)) >>> 0
+  return PLACE_COLORS[h % PLACE_COLORS.length]
+}
+
 /** Map stopId → màu journey, để marker tô cùng màu với đường nối nhóm nó. */
 export function stopColors(stops: GeoStop[]): Map<string, string> {
   const m = new Map<string, string>()

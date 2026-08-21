@@ -29,17 +29,19 @@ export const formatDayDate = (iso: string) =>
 
 /** "12–15 tháng 4 2026" — khoảng ngày của cả chuyến (gộp tháng/năm nếu trùng). */
 export const formatDateRange = (startIso: string, endIso: string) => {
-  const fmt = (opts: Intl.DateTimeFormatOptions) =>
-    new Intl.DateTimeFormat('vi-VN', { timeZone: TZ, ...opts })
-  const start = new Date(startIso)
-  const end = new Date(endIso)
-  const monthKey = fmt({ month: 'numeric', year: 'numeric' })
-  const sameMonth = monthKey.format(start) === monthKey.format(end)
-  const startDay = fmt({ day: 'numeric' }).format(start)
-  const endFull = fmt({ day: 'numeric', month: 'long', year: 'numeric' }).format(end)
-  return sameMonth
-    ? `${startDay}–${endFull}`
-    : `${fmt({ day: 'numeric', month: 'long' }).format(start)} – ${endFull}`
+  // Tự ghép chuỗi thay vì để Intl lo cả cụm: mẫu ngày tiếng Việt của iOS có tiền
+  // tố "ngày" (→ "21–ngày 21 tháng 8, 2026"), của Node/Android thì không. Ghép tay
+  // cho hai nền tảng đọc giống hệt nhau.
+  const s = ymdKey(startIso)
+  const e = ymdKey(endIso)
+  const day = (k: string) => Number(k.slice(8, 10))
+  const month = (k: string) => Number(k.slice(5, 7))
+  const year = (k: string) => k.slice(0, 4)
+  const endFull = `${day(e)} tháng ${month(e)}, ${year(e)}`
+  // Đi về trong ngày → chỉ một ngày, khỏi "21–21".
+  if (s === e) return endFull
+  if (month(s) === month(e) && year(s) === year(e)) return `${day(s)}–${endFull}`
+  return `${day(s)} tháng ${month(s)} – ${endFull}`
 }
 
 // --- Khoá & nhãn cho timeline Nhật ký (nhóm theo năm/tháng/ngày) -------------
