@@ -1,4 +1,4 @@
-import { AppBanner } from '@/components/app-banner'
+import { AppCta } from '@/components/app-cta'
 
 /**
  * Slug sai, share đã xoá, hoặc link hết hạn — RPC trả null cho cả ba nên trang
@@ -15,11 +15,10 @@ export default function ShareNotFound() {
         <p>
           Bộ sưu tập này đã hết hạn hoặc đã được gỡ. Hỏi người gửi xin link mới giúp bạn nhé.
         </p>
-        <a className="notice-link" href="/">
-          Tách Tách là gì?
-        </a>
       </main>
-      <AppBanner />
+      <div className="page notice-cta">
+        <AppCta />
+      </div>
     </>
   )
 }

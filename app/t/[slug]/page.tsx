@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { AppBanner } from '@/components/app-banner'
+import { AppCta } from '@/components/app-cta'
 import { BrandMark } from '@/components/brand-mark'
 import { ClockIcon, EyeIcon, HeartIcon } from '@/components/icons'
 import { ShareMap } from '@/components/share-map'
@@ -68,10 +68,15 @@ export default async function SharePage({ params }: PageProps) {
   return (
     <>
       <main className="page">
-        <p className="masthead">
-          <BrandMark size={26} />
-          <span className="masthead-note">· bộ sưu tập chia sẻ</span>
-        </p>
+        <header className="share-head">
+          <p className="masthead">
+            <BrandMark size={30} />
+            <span className="masthead-note">· bộ sưu tập chia sẻ</span>
+          </p>
+          <a className="head-cta" href={process.env.NEXT_PUBLIC_APP_STORE_URL ?? '/'}>
+            Tải app
+          </a>
+        </header>
         <h1 className="share-title">{share.name}</h1>
         <div className="share-meta">
           <span>{visibleStops(share).length} địa điểm</span>
@@ -103,8 +108,8 @@ export default async function SharePage({ params }: PageProps) {
             />
           }
         />
+        <AppCta />
       </main>
-      <AppBanner />
     </>
   )
 }

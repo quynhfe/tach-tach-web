@@ -7,7 +7,6 @@
    Chỉ khai ở đây những biến RIÊNG của web.
    --------------------------------------------------------------------------- */
 :root {
-  --banner-height: 76px;
   --content-max: 720px;
 }
 
@@ -44,7 +43,7 @@ body {
 .page {
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: 32px 20px calc(var(--banner-height) + 32px);
+  padding: 32px 20px 48px;
 }
 
 /* --- Header ---------------------------------------------------------------- */
@@ -297,7 +296,7 @@ body {
 
 /* --- Trạng thái rỗng / lỗi -------------------------------------------------- */
 .notice {
-  min-height: calc(100dvh - var(--banner-height));
+  min-height: 62vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -340,54 +339,6 @@ body {
   font-size: 15px;
   color: var(--muted);
   line-height: 1.6;
-}
-
-/* --- Banner "Mở trong app" -------------------------------------------------- */
-.app-banner {
-  position: fixed;
-  inset: auto 0 0 0;
-  height: var(--banner-height);
-  background: var(--card);
-  border-top: 1px solid var(--hairline);
-  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.05);
-}
-
-.app-banner-inner {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  height: 100%;
-  max-width: var(--content-max);
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.app-banner .text {
-  min-width: 0;
-  margin-right: auto;
-}
-
-.app-banner .title {
-  font-size: 14px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.app-banner .sub {
-  font-size: 12px;
-  color: var(--muted);
-  margin: 2px 0 0;
-}
-
-.app-banner a {
-  flex: 0 0 auto;
-  background: var(--brand);
-  color: var(--white);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 700;
-  border-radius: 999px;
-  padding: 11px 20px;
 }
 
 /* --- Toggle Nhật ký ⇄ Bản đồ ------------------------------------------------ */
@@ -1254,5 +1205,141 @@ body {
     animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- Đầu trang chia sẻ ------------------------------------------------------ */
+.share-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Nút mời tải app cho người không cuộn tới cuối. Nhạt hơn nút trong thẻ CTA ở
+   cuối trang để không tranh chỗ với nội dung chính là bộ ảnh. */
+.head-cta {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  color: var(--brand-dark);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 200ms ease-out, transform 200ms ease-out;
+}
+
+.head-cta:hover {
+  background: var(--brand);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* --- Thẻ mời tải app -------------------------------------------------------- */
+.app-cta {
+  position: relative;
+  margin-top: 56px;
+  padding: 0 24px 34px;
+  border-radius: 28px;
+  background: linear-gradient(168deg, var(--brand-soft) 0%, var(--cream) 62%);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Sticker gối lên nhau và nhô lên khỏi mép thẻ, cho ra vẻ dán tay chứ không
+   phải một hàng ảnh xếp thẳng. */
+.app-cta-stickers {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0;
+  margin-bottom: 6px;
+  padding-top: 26px;
+}
+
+.app-cta-stickers img {
+  width: clamp(74px, 13vw, 104px);
+  height: auto;
+}
+
+.app-cta-stickers img:nth-child(1) {
+  transform: rotate(-8deg) translateX(14px);
+}
+
+.app-cta-stickers img:nth-child(2) {
+  position: relative;
+  z-index: 1;
+  transform: translateY(-8px) scale(1.08);
+}
+
+.app-cta-stickers img:nth-child(3) {
+  transform: rotate(7deg) translateX(-14px);
+}
+
+.app-cta h2 {
+  margin: 0;
+  font-family: var(--font-baloo), var(--font-quicksand), sans-serif;
+  font-weight: 800;
+  font-size: clamp(21px, 3.4vw, 27px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.app-cta > p {
+  margin: 12px auto 0;
+  max-width: 46ch;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+.app-cta-btn {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 15px 32px;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(130, 190, 87, 0.42);
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+}
+
+.app-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(130, 190, 87, 0.5);
+}
+
+.app-cta-btn:active {
+  transform: translateY(0);
+}
+
+.app-cta-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 26px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Trang lỗi mượn lại cột nội dung của trang chia sẻ để thẻ CTA không tràn hết
+   bề ngang màn hình. */
+.notice-cta {
+  padding-top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .head-cta,
+  .app-cta-btn {
+    transition-duration: 0.01ms;
   }
 }
