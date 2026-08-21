@@ -31,6 +31,8 @@ export interface SharePhoto {
   stopId: string
   url: string
   thumbUrl: string
+  /** bản ~1080px — thứ lưới ảnh hiển thị; undefined (ảnh cũ) = lùi về `url` */
+  thumbMdUrl?: string
   width: number
   height: number
   caption?: string

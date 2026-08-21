@@ -22,20 +22,22 @@ export function AppCta() {
         ))}
       </div>
 
-      <h2>Chuyến của bạn cũng đáng được kể lại</h2>
-      <p>
-        Cứ chụp dọc đường, Tách Tách xếp giúp thành cuốn nhật ký có ngày có nơi chốn —
-        rồi gói lại thành một link như trang này để gửi đi.
-      </p>
+      <div className="app-cta-copy">
+        <h2>Chuyến của bạn cũng đáng được kể lại</h2>
+        <p>
+          Cứ chụp dọc đường, Tách Tách xếp giúp thành cuốn nhật ký có ngày có nơi chốn —
+          rồi gói lại thành một link như trang này để gửi đi.
+        </p>
 
-      <a className="app-cta-btn" href={storeUrl ?? '/'}>
-        {storeUrl ? 'Tải Tách Tách' : 'Xem Tách Tách làm được gì'}
-      </a>
+        <a className="app-cta-btn" href={storeUrl ?? '/'}>
+          {storeUrl ? 'Tải Tách Tách' : 'Xem Tách Tách làm được gì'}
+        </a>
 
-      <p className="app-cta-foot">
-        <BrandMark size={20} />
-        <span>Nhật ký hành trình trên bản đồ</span>
-      </p>
+        <p className="app-cta-foot">
+          <BrandMark size={20} />
+          <span>Nhật ký hành trình trên bản đồ</span>
+        </p>
+      </div>
     </section>
   )
 }

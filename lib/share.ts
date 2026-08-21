@@ -28,6 +28,7 @@ type PhotoRow = {
   stop_id: string
   object_key: string
   thumb_key: string
+  thumb_md_key: string | null
   width: number
   height: number
   caption: string | null
@@ -72,7 +73,10 @@ export async function getPublicShare(slug: string): Promise<PublicShare | null> 
   const result = data as ShareRpcResult
   const photoRows = result.photos ?? []
   const urls = await signReadUrls(
-    photoRows.flatMap((p) => [p.object_key, p.thumb_key]),
+    // thumb_md_key null với ảnh upload trước khi có tầng ảnh trung.
+    photoRows.flatMap((p) =>
+      [p.object_key, p.thumb_key, p.thumb_md_key].filter((k): k is string => !!k),
+    ),
     slug,
   )
 
@@ -100,6 +104,8 @@ export async function getPublicShare(slug: string): Promise<PublicShare | null> 
       stopId: p.stop_id,
       url: urls[p.object_key] ?? '',
       thumbUrl: urls[p.thumb_key] ?? urls[p.object_key] ?? '',
+      // Để undefined khi không có bản trung — chỗ đọc tự lùi về ảnh gốc.
+      thumbMdUrl: (p.thumb_md_key ? urls[p.thumb_md_key] : undefined) || undefined,
       width: p.width,
       height: p.height,
       caption: p.caption ?? undefined,

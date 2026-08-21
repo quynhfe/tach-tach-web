@@ -39,8 +39,11 @@ export function PhotoGrid({ photos }: { photos: SharePhoto[] }) {
             <figure key={p.id} className={i % 2 ? 'photo tilt-b' : 'photo tilt-a'}>
               <div className="frame">
                 <span className="washi" aria-hidden />
+                {/* Ô ảnh rộng ~340px (680px ở màn 2x) nên phải là bản TRUNG —
+                    bản thumb chỉ 128px, kéo lên cỡ này là nhoè hẳn. Ảnh cũ chưa
+                    có bản trung thì lùi về ảnh gốc. */}
                 <img
-                  src={p.thumbUrl || p.url}
+                  src={p.thumbMdUrl || p.url || p.thumbUrl}
                   alt={p.caption ?? ''}
                   width={p.width}
                   height={p.height}

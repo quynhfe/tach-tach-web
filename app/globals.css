@@ -7,7 +7,7 @@
    Chỉ khai ở đây những biến RIÊNG của web.
    --------------------------------------------------------------------------- */
 :root {
-  --content-max: 720px;
+  --content-max: 1200px;
 }
 
 * {
@@ -28,22 +28,13 @@ body {
 }
 
 /* Chừa chỗ cho banner "Mở trong app" dính đáy, khỏi che ảnh cuối trang. */
-@media (min-width: 1080px) {
-  :root {
-    --content-max: 900px;
-  }
-}
-
-@media (min-width: 1400px) {
-  :root {
-    --content-max: 1040px;
-  }
-}
-
 .page {
+  width: 100%;
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: 32px 20px 48px;
+  /* Lề trong rộng dần theo màn: điện thoại cần sát mép để không phí chỗ, màn
+     lớn cần khoảng thở để nội dung không dán vào cạnh kính. */
+  padding: 32px clamp(20px, 4vw, 44px) 56px;
 }
 
 /* --- Header ---------------------------------------------------------------- */
@@ -381,6 +372,7 @@ body {
   width: 100%;
   height: auto;
   aspect-ratio: 720 / 420;
+  max-height: 66vh;
   object-fit: cover;
   border-radius: 16px;
   background: var(--brand-soft);
@@ -414,6 +406,7 @@ body {
   width: 100%;
   aspect-ratio: 720 / 420;
   min-height: 320px;
+  max-height: 66vh;
   border-radius: 16px;
   overflow: hidden;
   background: var(--map-land);
@@ -1243,26 +1236,37 @@ body {
 .app-cta {
   position: relative;
   margin-top: 56px;
-  padding: 0 24px 34px;
+  padding: 30px clamp(22px, 4vw, 44px) 34px;
   border-radius: 28px;
   background: linear-gradient(168deg, var(--brand-soft) 0%, var(--cream) 62%);
   text-align: center;
   overflow: hidden;
 }
 
-/* Sticker gối lên nhau và nhô lên khỏi mép thẻ, cho ra vẻ dán tay chứ không
-   phải một hàng ảnh xếp thẳng. */
+/* Đủ rộng thì chuyển sang hai cột: minh hoạ một bên, lời mời một bên. Chỉ giãn
+   thẻ ra mà giữ chữ canh giữa thì câu chữ nằm lọt thỏm giữa hai mảng trống. */
+@media (min-width: 820px) {
+  .app-cta {
+    display: grid;
+    grid-template-columns: minmax(210px, 0.8fr) 1.2fr;
+    align-items: center;
+    gap: clamp(24px, 4vw, 52px);
+    text-align: left;
+    background: linear-gradient(105deg, var(--brand-soft) 0%, var(--cream) 58%);
+  }
+}
+
+/* Sticker gối lên nhau và nhô lên khỏi hàng, cho ra vẻ dán tay chứ không phải
+   một hàng ảnh xếp thẳng. */
 .app-cta-stickers {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: 0;
   margin-bottom: 6px;
-  padding-top: 26px;
 }
 
 .app-cta-stickers img {
-  width: clamp(74px, 13vw, 104px);
+  width: clamp(74px, 11vw, 116px);
   height: auto;
 }
 
@@ -1280,17 +1284,23 @@ body {
   transform: rotate(7deg) translateX(-14px);
 }
 
+@media (min-width: 820px) {
+  .app-cta-stickers {
+    margin-bottom: 0;
+  }
+}
+
 .app-cta h2 {
   margin: 0;
   font-family: var(--font-baloo), var(--font-quicksand), sans-serif;
   font-weight: 800;
-  font-size: clamp(21px, 3.4vw, 27px);
-  line-height: 1.25;
+  font-size: clamp(21px, 3vw, 30px);
+  line-height: 1.22;
   letter-spacing: -0.01em;
   color: var(--ink);
 }
 
-.app-cta > p {
+.app-cta-copy > p {
   margin: 12px auto 0;
   max-width: 46ch;
   font-size: 15px;
@@ -1329,6 +1339,23 @@ body {
   margin: 26px 0 0;
   font-size: 13px;
   color: var(--muted);
+}
+
+/* Hai cột thì chữ canh trái, nên khối văn bản và dòng thương hiệu bỏ canh giữa. */
+@media (min-width: 820px) {
+  .app-cta-copy {
+    min-width: 0;
+  }
+
+  .app-cta-copy > p {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .app-cta-foot {
+    justify-content: flex-start;
+    margin-top: 22px;
+  }
 }
 
 /* Trang lỗi mượn lại cột nội dung của trang chia sẻ để thẻ CTA không tràn hết
