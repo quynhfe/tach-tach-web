@@ -6,14 +6,24 @@ import { formatDayMonth, formatTime, ymdKey } from '@/lib/datetime'
 import { PLACE_COLORS } from '@/lib/map-geo'
 import type { PublicShare, ShareStop } from '@/lib/share'
 
-/** Gom stop theo ngày, giữ thứ tự cũ → mới mà RPC đã sắp sẵn. */
+/**
+ * Gom stop theo ngày, giữ thứ tự cũ → mới mà RPC đã sắp sẵn. Gom qua Map (chứ
+ * không chỉ gộp các stop LIỀN NHAU) để cùng luật với `ShareTimeline` bên app —
+ * dữ liệu về không đúng thứ tự thì hai bên vẫn ra một kết quả, và không sinh ra
+ * hai nhóm cùng khoá ngày.
+ */
 function groupByDay(stops: ShareStop[]) {
   const days: { key: string; stops: ShareStop[] }[] = []
+  const byKey = new Map<string, ShareStop[]>()
   for (const stop of stops) {
     const key = ymdKey(stop.arrivedAt)
-    const last = days[days.length - 1]
-    if (last?.key === key) last.stops.push(stop)
-    else days.push({ key, stops: [stop] })
+    const found = byKey.get(key)
+    if (found) found.push(stop)
+    else {
+      const group: ShareStop[] = [stop]
+      byKey.set(key, group)
+      days.push({ key, stops: group })
+    }
   }
   return days
 }

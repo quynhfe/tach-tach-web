@@ -195,28 +195,30 @@ body {
    Khung giấy trắng nghiêng nhẹ + băng keo washi + dấu giờ film góc phải-trên,
    khớp ngôn ngữ của src/components/journal/MasonryGrid.tsx bên app. */
 .grid {
-  columns: 2;
-  column-gap: 14px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
 }
 
-@media (min-width: 560px) {
-  .grid {
-    columns: 3;
-  }
+.grid-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .photo {
-  break-inside: avoid;
-  margin: 0 0 16px;
+  margin: 0;
 }
 
-/* Xoay luân phiên hai chiều cho ra dáng ảnh dán tay. Góc nhỏ (≤0.6deg) vì cột
-   masonry sát nhau — nghiêng hơn là mép ảnh chạm nhau và tràn ngang. */
-.photo:nth-child(odd) .frame {
+/* Xoay luân phiên hai chiều cho ra dáng ảnh dán tay. Góc nhỏ (≤0.6deg) vì hai
+   cột sát nhau — nghiêng hơn là mép ảnh chạm nhau và tràn ngang. */
+.tilt-a {
   transform: rotate(-0.5deg);
 }
 
-.photo:nth-child(even) .frame {
+.tilt-b {
   transform: rotate(0.6deg);
 }
 
@@ -229,8 +231,7 @@ body {
 }
 
 /* Băng keo washi ở mép trên khung — màu nhạt quay vòng theo vị trí ảnh. */
-.photo .frame::before {
-  content: '';
+.washi {
   position: absolute;
   top: -8px;
   left: 18%;
@@ -242,14 +243,14 @@ body {
   border-radius: 2px;
 }
 
-.photo:nth-child(3n) .frame::before {
+.photo:nth-child(3n) .washi {
   left: auto;
   right: 16%;
   transform: rotate(5deg);
   background: var(--place-soft-2);
 }
 
-.photo:nth-child(3n + 2) .frame::before {
+.photo:nth-child(3n + 2) .washi {
   background: var(--place-soft-3);
 }
 

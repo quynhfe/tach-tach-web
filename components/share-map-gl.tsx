@@ -23,6 +23,43 @@ type MapStop = ShareStop & { lat: number; lng: number }
 
 const MIN_ZOOM = 2
 const MAX_ZOOM = 17
+const ROUTE_SOURCE = 'share-routes'
+
+/**
+ * Đường nối: bóng ink lệch xuống-phải rồi thân màu hành trình — cùng paint spec
+ * với `SharedMap.tsx` bên app, chỉ đổi camelCase sang kebab-case. `line-cap` và
+ * `line-join` là thuộc tính LAYOUT bên GL JS, không nằm trong paint.
+ */
+function addRouteLayers(map: mapboxgl.Map, data: ReturnType<typeof routeFeatures>) {
+  map.addSource(ROUTE_SOURCE, {
+    type: 'geojson',
+    data: data as unknown as mapboxgl.GeoJSONSourceSpecification['data'],
+  })
+  map.addLayer({
+    id: 'share-route-shadow',
+    type: 'line',
+    source: ROUTE_SOURCE,
+    layout: { 'line-cap': 'round', 'line-join': 'round' },
+    paint: {
+      'line-color': COLORS.ink,
+      'line-width': ['interpolate', ['linear'], ['zoom'], 6, 4, 14, 9],
+      'line-opacity': 0.22,
+      'line-translate': [2, 3],
+      'line-translate-anchor': 'viewport',
+    },
+  })
+  map.addLayer({
+    id: 'share-route-line',
+    type: 'line',
+    source: ROUTE_SOURCE,
+    layout: { 'line-cap': 'round', 'line-join': 'round' },
+    paint: {
+      'line-color': ['get', 'color'],
+      'line-width': ['interpolate', ['linear'], ['zoom'], 6, 3, 14, 7],
+      'line-opacity': 0.95,
+    },
+  })
+}
 
 export default function ShareMapGL({
   stops,
@@ -35,13 +72,15 @@ export default function ShareMapGL({
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
-  const [ready, setReady] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [lightbox, setLightbox] = useState<string | null>(null)
 
   const points = useMemo(() => mappableStops(stops) as MapStop[], [stops])
   const colors = useMemo(() => stopColors(points), [points])
   const routes = useMemo(() => routeFeatures(points), [points])
+  // Effect dựng map chạy một lần nên không đọc được `routes` mới nhất qua
+  // closure — giữ qua ref để lần thử lại nào cũng lấy đúng dữ liệu hiện tại.
+  const routesRef = useRef(routes)
   const photosOf = useMemo(() => {
     const m = new Map<string, SharePhoto[]>()
     for (const p of photos) {
@@ -85,57 +124,40 @@ export default function ShareMapGL({
     map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
     // Chạm nền map (không trúng pin) = đóng card, giống app.
     map.on('click', () => setSelectedId(null))
-    map.on('load', () => setReady(true))
+    // Không chờ sự kiện `load`: chỉ cần MỘT layer trong style trỏ nhầm
+    // source-layer là GL JS coi style lỗi và `load` không bao giờ bắn — lúc đó
+    // map vẫn vẽ được nhưng đường nối thì không bao giờ được thêm vào. Hỏi
+    // thẳng `isStyleLoaded()` mỗi lần style đổi là chắc chắn hơn.
+    // Thêm đường nối ngay khi style nhận layer, và THỬ LẠI ở mỗi `styledata`.
+    // Không chờ `isStyleLoaded()`/`load`: chỉ cần sprite hoặc một source lẻ chưa
+    // về là hai thứ đó đứng mãi ở false, và đường nối sẽ không bao giờ được vẽ.
+    const ensureRoutes = () => {
+      if (map.getSource(ROUTE_SOURCE)) return
+      const fc = routesRef.current
+      if (!fc.features.length) return
+      try {
+        addRouteLayers(map, fc)
+      } catch {
+        // Style chưa nhận layer — lần `styledata` sau thử lại.
+      }
+    }
+    map.on('styledata', ensureRoutes)
+    ensureRoutes()
     mapRef.current = map
 
     return () => {
       map.remove()
       mapRef.current = null
-      setReady(false)
     }
   }, [points])
 
-  // Đường nối: bóng ink lệch xuống-phải rồi thân màu hành trình — cùng paint spec
-  // với `SharedMap.tsx` bên app, chỉ đổi camelCase sang kebab-case. line-cap và
-  // line-join là thuộc tính LAYOUT bên GL JS, không nằm trong paint.
+  // Dữ liệu đường đổi (đổi bộ stop) → bơm lại vào source đã có. Việc TẠO source
+  // và layer nằm trong effect dựng map, vì nó phải thử lại theo style.
   useEffect(() => {
-    const map = mapRef.current
-    if (!map || !ready) return
-    const data = routes as unknown as mapboxgl.GeoJSONSourceSpecification['data']
-
-    const src = map.getSource('share-routes') as mapboxgl.GeoJSONSource | undefined
-    if (src) {
-      src.setData(data)
-      return
-    }
-    if (!routes.features.length) return
-
-    map.addSource('share-routes', { type: 'geojson', data })
-    map.addLayer({
-      id: 'share-route-shadow',
-      type: 'line',
-      source: 'share-routes',
-      layout: { 'line-cap': 'round', 'line-join': 'round' },
-      paint: {
-        'line-color': COLORS.ink,
-        'line-width': ['interpolate', ['linear'], ['zoom'], 6, 4, 14, 9],
-        'line-opacity': 0.22,
-        'line-translate': [2, 3],
-        'line-translate-anchor': 'viewport',
-      },
-    })
-    map.addLayer({
-      id: 'share-route-line',
-      type: 'line',
-      source: 'share-routes',
-      layout: { 'line-cap': 'round', 'line-join': 'round' },
-      paint: {
-        'line-color': ['get', 'color'],
-        'line-width': ['interpolate', ['linear'], ['zoom'], 6, 3, 14, 7],
-        'line-opacity': 0.95,
-      },
-    })
-  }, [ready, routes])
+    routesRef.current = routes
+    const src = mapRef.current?.getSource(ROUTE_SOURCE) as mapboxgl.GeoJSONSource | undefined
+    src?.setData(routes as unknown as mapboxgl.GeoJSONSourceSpecification['data'])
+  }, [routes])
 
   // Gắn/gỡ marker theo danh sách stop. Node DOM giữ trong state để portal bám
   // được; marker tự huỷ khi stop biến mất.
@@ -161,7 +183,7 @@ export default function ShareMapGL({
       for (const m of markers) m.remove()
       setPinNodes(new Map())
     }
-  }, [points, ready])
+  }, [points])
 
   const selected = points.find((s) => s.id === selectedId) ?? null
   const selectedPhotos = selected ? (photosOf.get(selected.id) ?? []) : []

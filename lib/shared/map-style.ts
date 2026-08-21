@@ -39,18 +39,6 @@ export const BRAND_MAP_STYLE = {
       type: "background",
       paint: { "background-color": COLORS.mapLand }
     },
-    // Phủ thực vật (rừng/cỏ/đồng ruộng) — tint xanh brand-soft NHẸ trên nền đất để
-    // rừng/đồng nổi khối xanh đậm hơn nền, đậm dần khi zoom gần cho ra mảng cây.
-    {
-      id: "landcover",
-      type: "fill",
-      source: "composite",
-      "source-layer": "landcover",
-      paint: {
-        "fill-color": COLORS.mapVeg,
-        "fill-opacity": ["interpolate", ["linear"], ["zoom"], 3, 0.85, 10, 0.95]
-      }
-    },
     // Công viên / cây xanh — mảng brand-soft nhạt.
     {
       id: "landuse-green",

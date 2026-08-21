@@ -20,6 +20,9 @@ export function PhotoLightbox({
 }) {
   const [index, setIndex] = useState(startIndex)
   const drag = useRef<{ x: number; t: number } | null>(null)
+  // Vuốt trên nền cũng kết thúc bằng một sự kiện `click` của trình duyệt. Không
+  // đánh dấu thì mỗi cú vuốt đổi ảnh đều đóng luôn lightbox.
+  const swiped = useRef(false)
 
   const step = useCallback(
     (delta: number) => setIndex((i) => Math.min(Math.max(i + delta, 0), photos.length - 1)),
@@ -50,9 +53,16 @@ export function PhotoLightbox({
       className="lightbox"
       role="dialog"
       aria-modal="true"
-      onClick={onClose}
+      onClick={() => {
+        if (swiped.current) {
+          swiped.current = false
+          return
+        }
+        onClose()
+      }}
       onPointerDown={(e) => {
         drag.current = { x: e.clientX, t: e.timeStamp }
+        swiped.current = false
       }}
       onPointerUp={(e) => {
         const start = drag.current
@@ -61,6 +71,7 @@ export function PhotoLightbox({
         const dx = e.clientX - start.x
         const dt = Math.max(e.timeStamp - start.t, 1)
         if (Math.abs(dx) < SWIPE_DISTANCE && Math.abs(dx) / dt < SWIPE_VELOCITY) return
+        swiped.current = true
         step(dx < 0 ? 1 : -1)
       }}>
       <img
