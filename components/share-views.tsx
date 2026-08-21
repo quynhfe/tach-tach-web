@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from 'react'
 import { PhotoGrid } from '@/components/photo-grid'
-import { formatDayShort, formatTime, ymdKey } from '@/lib/datetime'
+import { formatDayMonth, formatTime, ymdKey } from '@/lib/datetime'
 import { PLACE_COLORS } from '@/lib/map-geo'
 import type { PublicShare, ShareStop } from '@/lib/share'
 
@@ -61,27 +61,43 @@ export function ShareViews({ share, map }: { share: PublicShare; map: ReactNode 
             return (
               <section key={day.key}>
                 <div className="day-header">
+                  <span className="day-label">{formatDayMonth(day.stops[0].arrivedAt)}</span>
                   <span className="day-badge" style={{ backgroundColor: color }}>
-                    {formatDayShort(day.stops[0].arrivedAt)}
+                    {day.stops.length}
                   </span>
-                  <span className="day-count">{day.stops.length} địa điểm</span>
                 </div>
 
-                {day.stops.map((stop) => (
-                  <article key={stop.id} className="stop">
-                    <div className="stop-head">
-                      <span className="stop-dot" style={{ backgroundColor: color }} />
-                      <h2 className="stop-name">{stop.name}</h2>
-                      <span className="stop-time">{formatTime(stop.arrivedAt)}</span>
-                    </div>
-                    {(stop.city || stop.region) && (
-                      <p className="stop-place">
-                        {[stop.city, stop.region].filter(Boolean).join(' · ')}
-                      </p>
-                    )}
-                    <PhotoGrid photos={share.photos.filter((p) => p.stopId === stop.id)} />
-                  </article>
-                ))}
+                {day.stops.map((stop) => {
+                  const visible = share.photos.filter((p) => p.stopId === stop.id)
+                  // Không còn ảnh nào hiện: hoặc chủ giữ riêng cả cụm (place
+                  // card), hoặc dữ liệu cũ từ trước migration 0011 — cái sau thì
+                  // bỏ qua hẳn thay vì để tên trơ trọi.
+                  if (visible.length === 0 && stop.hiddenPhotoCount === 0) return null
+                  return (
+                    <article key={stop.id} className="stop">
+                      <div className="stop-head">
+                        <span className="stop-dot" style={{ backgroundColor: color }} />
+                        <h2 className="stop-name">{stop.name}</h2>
+                        <span className="stop-time">{formatTime(stop.arrivedAt)}</span>
+                      </div>
+                      {(stop.city || stop.region) && (
+                        <p className="stop-place">
+                          {[stop.city, stop.region].filter(Boolean).join(' · ')}
+                        </p>
+                      )}
+                      {visible.length > 0 ? (
+                        <PhotoGrid photos={visible} />
+                      ) : (
+                        <div className="place-card">
+                          <span className="place-art" aria-hidden>
+                            🎞
+                          </span>
+                          <p>Ảnh ở nơi này được giữ riêng</p>
+                        </div>
+                      )}
+                    </article>
+                  )
+                })}
               </section>
             )
           })}

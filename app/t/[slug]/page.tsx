@@ -7,12 +7,24 @@ import { ShareMap } from '@/components/share-map'
 import { ShareViews } from '@/components/share-views'
 import { expiryLabel } from '@/lib/datetime'
 import { coverPhoto, getPublicShare, incrementShareView } from '@/lib/share'
+import type { PublicShare } from '@/lib/share'
 
 // Presigned URL sống 1 giờ, còn share thì chủ nhân sửa được bất cứ lúc nào →
 // render mỗi request. Server ký lại URL nên ảnh không chết vì để tab mở lâu.
 export const dynamic = 'force-dynamic'
 
 type PageProps = { params: Promise<{ slug: string }> }
+
+/**
+ * Địa điểm THỰC SỰ hiện ra trang: còn ảnh hiển thị, hoặc chủ giữ riêng ảnh (hiện
+ * place card). RPC đã bỏ địa điểm xoá sạch ảnh từ nguồn; lọc thêm ở đây để số
+ * đếm không kể những share cũ tạo trước migration 0011.
+ */
+function visibleStops(share: PublicShare) {
+  return share.stops.filter(
+    (s) => s.hiddenPhotoCount > 0 || share.photos.some((p) => p.stopId === s.id),
+  )
+}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
@@ -21,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const cover = coverPhoto(share)
   const title = `${share.name} · Tách Tách`
-  const description = `${share.stops.length} địa điểm · ${share.photos.length} kỷ niệm`
+  const description = `${visibleStops(share).length} địa điểm · ${share.photos.length} kỷ niệm`
 
   return {
     title,
@@ -57,12 +69,12 @@ export default async function SharePage({ params }: PageProps) {
     <>
       <main className="page">
         <p className="masthead">
-          <BrandMark size={22} wordmark={false} />
-          <span>Tách Tách · bộ sưu tập chia sẻ</span>
+          <BrandMark size={26} />
+          <span className="masthead-note">· bộ sưu tập chia sẻ</span>
         </p>
         <h1 className="share-title">{share.name}</h1>
         <div className="share-meta">
-          <span>{share.stops.length} địa điểm</span>
+          <span>{visibleStops(share).length} địa điểm</span>
           <span>{share.photos.length} kỷ niệm</span>
           <span className="meta-stat">
             <EyeIcon />
@@ -83,7 +95,13 @@ export default async function SharePage({ params }: PageProps) {
 
         <ShareViews
           share={share}
-          map={<ShareMap stops={share.stops} blurLocation={share.blurLocation} />}
+          map={
+            <ShareMap
+              stops={share.stops}
+              photos={share.photos}
+              blurLocation={share.blurLocation}
+            />
+          }
         />
       </main>
       <AppBanner />

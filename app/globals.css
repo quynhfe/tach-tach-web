@@ -35,14 +35,19 @@ body {
 }
 
 /* --- Header ---------------------------------------------------------------- */
+/* Wordmark thật (Baloo2, màu ink) chứ không phải chữ tự viết — đặt cạnh app thì
+   phải nhận ra là cùng một thương hiệu. Hậu tố mới là chữ phụ màu muted. */
 .masthead {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 8px;
   margin: 0;
+}
+
+.masthead-note {
   font-size: 13px;
-  font-weight: 700;
-  color: var(--brand-dark);
+  font-weight: 600;
+  color: var(--muted);
   letter-spacing: 0.02em;
 }
 
@@ -75,28 +80,38 @@ body {
   margin: 24px 0 4px;
 }
 
-/* --- Ngày & địa điểm -------------------------------------------------------- */
+/* --- Ngày & địa điểm --------------------------------------------------------
+   Bản gốc để so: src/components/journal/DayHeader.tsx bên app — nhãn ngày mé
+   trái, badge số kỷ niệm tròn màu quay vòng neo mé phải và NHÔ LÊN khỏi khối. */
 .day-header {
+  position: relative;
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 32px 0 18px;
+  align-items: flex-end;
+  min-height: 40px;
+  margin: 40px 0 18px;
+}
+
+.day-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
 }
 
 .day-badge {
+  position: absolute;
+  right: 0;
+  bottom: -6px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 8px;
   border-radius: 999px;
-  padding: 5px 14px;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
-  color: #fff;
-}
-
-.day-count {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
+  color: var(--card);
+  box-shadow: var(--shadow-btn);
 }
 
 .stop {
@@ -137,10 +152,51 @@ body {
   color: var(--muted);
 }
 
-/* --- Lưới ảnh kiểu scrapbook ------------------------------------------------ */
+/* --- Địa điểm chủ giữ riêng ảnh ---------------------------------------------
+   Chỉ hiện khi địa điểm còn ảnh sống nhưng chủ bỏ tick SẠCH. Kể tên nơi đã đi
+   qua mà không để lại khoảng trắng hụt, và không nói chủ giấu bao nhiêu tấm. */
+.place-card {
+  position: relative;
+  margin-left: 20px;
+  border: 1.5px dashed var(--hairline);
+  border-radius: 12px;
+  padding: 22px 18px;
+  text-align: center;
+  background: var(--card);
+}
+
+.place-card::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 74px;
+  height: 18px;
+  transform: translateX(-50%) rotate(-4deg);
+  background: var(--yellow-soft);
+  opacity: 0.9;
+  border-radius: 2px;
+}
+
+.place-card p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.place-card .place-art {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+/* --- Lưới ảnh kiểu scrapbook ------------------------------------------------
+   Khung giấy trắng nghiêng nhẹ + băng keo washi + dấu giờ film góc phải-trên,
+   khớp ngôn ngữ của src/components/journal/MasonryGrid.tsx bên app. */
 .grid {
   columns: 2;
-  column-gap: 12px;
+  column-gap: 14px;
 }
 
 @media (min-width: 560px) {
@@ -151,15 +207,50 @@ body {
 
 .photo {
   break-inside: avoid;
-  margin: 0 0 12px;
-  background: var(--card);
-  border-radius: 6px;
-  padding: 6px 6px 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  margin: 0 0 16px;
+}
+
+/* Xoay luân phiên hai chiều cho ra dáng ảnh dán tay. Góc nhỏ (≤0.6deg) vì cột
+   masonry sát nhau — nghiêng hơn là mép ảnh chạm nhau và tràn ngang. */
+.photo:nth-child(odd) .frame {
+  transform: rotate(-0.5deg);
+}
+
+.photo:nth-child(even) .frame {
+  transform: rotate(0.6deg);
 }
 
 .photo .frame {
   position: relative;
+  background: var(--card);
+  border-radius: 6px;
+  padding: 6px 6px 8px;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Băng keo washi ở mép trên khung — màu nhạt quay vòng theo vị trí ảnh. */
+.photo .frame::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 18%;
+  width: 46px;
+  height: 16px;
+  transform: rotate(-4deg);
+  background: var(--place-soft-1);
+  opacity: 0.85;
+  border-radius: 2px;
+}
+
+.photo:nth-child(3n) .frame::before {
+  left: auto;
+  right: 16%;
+  transform: rotate(5deg);
+  background: var(--place-soft-2);
+}
+
+.photo:nth-child(3n + 2) .frame::before {
+  background: var(--place-soft-3);
 }
 
 .photo img {
@@ -170,11 +261,12 @@ body {
   background: var(--brand-soft);
 }
 
-/* Dấu giờ kiểu datestamp máy film — cam cháy, không đổ bóng (đè trên ảnh). */
+/* Dấu giờ kiểu datestamp máy film — cam cháy, góc phải-trên như MasonryGrid.
+   KHÔNG đổ bóng: chữ đè trên ảnh mà thêm shadow là sai tone (rule 13). */
 .film-stamp {
   position: absolute;
-  right: 6px;
-  bottom: 6px;
+  right: 12px;
+  top: 12px;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 9px;
   letter-spacing: 0.08em;
@@ -182,10 +274,11 @@ body {
 }
 
 .caption {
-  margin: 7px 2px 0;
+  margin: 8px 4px 0;
   font-size: 12px;
   line-height: 1.45;
   color: var(--ink);
+  text-align: center;
 }
 
 /* --- Trạng thái rỗng / lỗi -------------------------------------------------- */
@@ -277,7 +370,7 @@ body {
 .app-banner a {
   flex: 0 0 auto;
   background: var(--brand);
-  color: #fff;
+  color: var(--white);
   text-decoration: none;
   font-size: 14px;
   font-weight: 700;
@@ -292,7 +385,7 @@ body {
   margin: 20px 0 4px;
   padding: 4px;
   border-radius: 999px;
-  background: #eef0ec;
+  background: var(--canvas);
 }
 
 .view-toggle button {
@@ -309,7 +402,7 @@ body {
 
 .view-toggle button.active {
   background: var(--brand);
-  color: #fff;
+  color: var(--white);
 }
 
 /* --- Bản đồ ----------------------------------------------------------------- */
@@ -330,22 +423,6 @@ body {
   background: var(--brand-soft);
 }
 
-/* Nút mời sang app đặt DƯỚI ảnh, không đè: đè lên thì che mất chính cái pin
-   mà người xem đang muốn nhìn. */
-.map-cta {
-  display: block;
-  margin: 14px auto 0;
-  width: fit-content;
-  background: var(--brand);
-  color: #fff;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 700;
-  border-radius: 999px;
-  padding: 12px 22px;
-  box-shadow: 0 4px 14px rgba(130, 190, 87, 0.4);
-}
-
 .map-hint {
   margin: 12px 2px 0;
   font-size: 13px;
@@ -362,9 +439,36 @@ body {
   text-align: center;
   padding: 0 24px;
   border-radius: 16px;
-  background: #eef0ec;
+  background: var(--canvas);
   font-size: 14px;
   color: var(--muted);
+}
+
+/* Khung map GL và ô chờ lúc lazy-load — cùng tỉ lệ với ảnh tĩnh để không giật
+   layout dù rơi vào nhánh nào. */
+.map-gl,
+.map-skeleton {
+  width: 100%;
+  aspect-ratio: 720 / 420;
+  min-height: 320px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--map-land);
+}
+
+.map-skeleton {
+  background: linear-gradient(100deg, var(--map-land), var(--brand-soft), var(--map-land));
+  background-size: 300% 100%;
+  animation: map-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes map-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
 }
 
 .map-blur-note {
@@ -379,53 +483,82 @@ body {
   font-weight: 600;
   color: var(--muted);
   pointer-events: none;
+  z-index: 2;
 }
 
-/* Pin = ảnh tròn viền trắng + nhãn tên, khớp PhotoMarker của app. */
-.map-pin {
+/* --- Pin ảnh trên map -------------------------------------------------------
+   Bản DOM của src/components/map/PhotoMarker.tsx + PhotoFrame.tsx bên app. */
+.pin-anchor {
+  line-height: 0;
+}
+
+.pin {
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: default;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: transform 160ms cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
-.map-pin-photo {
+.pin.selected {
+  transform: scale(1.25);
+  z-index: 3;
+}
+
+.pin-art {
   position: relative;
+  display: block;
+}
+
+.pin-frame {
+  display: block;
   width: 60px;
   height: 60px;
-  border-radius: 999px;
-  border: 3px solid #fff;
-  overflow: visible;
-  background: var(--brand-soft);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
+  border-radius: 12px;
+  border: 3px solid var(--white);
+  overflow: hidden;
+  background: var(--canvas);
+  box-shadow: var(--shadow-btn);
 }
 
-.map-pin-photo img {
+.pin-frame img {
   width: 100%;
   height: 100%;
-  border-radius: 999px;
   object-fit: cover;
   display: block;
 }
 
-.map-pin-badge {
+/* Địa điểm chủ giữ riêng ảnh: không có bìa để vẽ nên pin về chấm trơn màu
+   hành trình, không phải khung ảnh rỗng. */
+.pin-dot {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 3px solid var(--white);
+  box-shadow: var(--shadow-btn);
+}
+
+.pin-badge {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -6px;
+  right: -6px;
   min-width: 20px;
   padding: 0 5px;
   border-radius: 999px;
-  border: 2px solid #fff;
-  background: var(--pin-color);
-  color: #fff;
+  border: 2px solid var(--white);
+  color: var(--white);
   font-size: 10px;
   font-weight: 700;
   line-height: 17px;
   text-align: center;
 }
 
-.map-pin-label {
-  margin-top: 4px;
+.pin-name {
   max-width: 92px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -436,6 +569,221 @@ body {
   font-size: 10px;
   font-weight: 600;
   color: var(--ink);
+}
+
+/* --- Card xem trước địa điểm ------------------------------------------------
+   Bản DOM của src/components/map/StopPreviewCard.tsx bên app. */
+.preview-card {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 4;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+  animation: preview-rise 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes preview-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+.preview-accent {
+  height: 6px;
+}
+
+.preview-body {
+  padding: 14px 16px 16px;
+}
+
+.preview-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.preview-thumb {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: 2px solid var(--white);
+  overflow: hidden;
+  background: var(--canvas);
+  box-shadow: var(--shadow-btn);
+}
+
+.preview-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.preview-text {
+  flex: 1;
+  min-width: 0;
+  display: block;
+}
+
+.preview-name {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview-place {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview-close {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--canvas);
+  color: var(--ink);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.preview-private {
+  margin: 12px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.preview-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.preview-actions .btn-primary,
+.preview-actions .btn-secondary {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.preview-actions .btn-primary {
+  background: var(--brand);
+  color: var(--white);
+  box-shadow: var(--shadow-btn);
+}
+
+.preview-actions .btn-secondary {
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+/* --- Xem ảnh full màn -------------------------------------------------------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(23, 21, 15, 0.94);
+  touch-action: pan-y;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.lightbox-caption {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 24px;
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.lightbox-close,
+.lightbox-nav {
+  position: absolute;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.lightbox-close {
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  font-size: 15px;
+}
+
+.lightbox-nav {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.lightbox-nav.prev {
+  left: 12px;
+}
+
+.lightbox-nav.next {
+  right: 12px;
+}
+
+.lightbox-nav:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.lightbox-count {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
 }
 
 /* --- Nhận diện thương hiệu --------------------------------------------------- */
@@ -577,7 +925,7 @@ body {
   max-width: 46ch;
   font-size: 16px;
   line-height: 1.65;
-  color: #6f7566;
+  color: var(--ink-soft);
 }
 
 .hero-actions {
@@ -596,7 +944,7 @@ body {
 
 .btn-primary {
   background: var(--brand);
-  color: #fff;
+  color: var(--white);
   box-shadow: 0 6px 18px rgba(130, 190, 87, 0.38);
   transition: transform 180ms ease-out, box-shadow 180ms ease-out;
 }
@@ -673,12 +1021,12 @@ body {
 
 .tone-pink {
   background: var(--pink-soft);
-  color: #c85d84;
+  color: var(--pink-dark);
 }
 
 .tone-blue {
   background: var(--blue-soft);
-  color: #4a84c4;
+  color: var(--blue-dark);
 }
 
 .feature h2 {

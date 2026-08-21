@@ -40,6 +40,9 @@ export const COLORS = {
   // trên nền đất sáng (kiểu Jagat: nhãn xám nhẹ, đọc được nhưng không đập mắt).
   mapLabel: "#7f887f",
   muted: "#9fa3a7", // gray — chữ phụ
+  // Chữ THÂN BÀI dài: nhạt hơn `ink` một nấc cho đỡ nặng mắt, nhưng vẫn đủ tương
+  // phản để đọc cả đoạn (khác `muted` vốn chỉ dành cho nhãn ngắn).
+  inkSoft: "#6f7566",
   brand: "#82be57",
   brandDark: "#5f9a3c",
   brandLink: "#5f9a3c",
@@ -47,10 +50,14 @@ export const COLORS = {
   // Màu phụ trợ tươi (dùng cho cụm địa điểm, nhãn, nền nhạt…)
   pink: "#f08fb2",
   pinkSoft: "#f8d8e4",
+  // Sắc ĐẬM của pink/blue — dùng cho CHỮ đặt trên nền `*Soft` cùng tông; bản
+  // gốc quá sáng nên chữ mờ. (Web viewer: nhãn tính năng ở trang giới thiệu.)
+  pinkDark: "#c85d84",
   yellow: "#f7c84b",
   yellowSoft: "#fbe9b5",
   blue: "#80b4ee",
   blueSoft: "#d6e8f8",
+  blueDark: "#4a84c4",
   // Nước trên MAP — xanh dịu, BỚT bão hoà so với `blue` (tránh "dạ quang"/neon trên
   // nền đất sage). Tách token riêng vì `blue` còn dùng cho place colors/route/icon.
   mapWater: "#afd8eb",
