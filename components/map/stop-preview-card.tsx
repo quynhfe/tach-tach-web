@@ -31,9 +31,13 @@ export function StopPreviewCard({
       <div className="preview-accent" style={{ backgroundColor: color }} />
       <div className="preview-body">
         <div className="preview-head">
-          <span className="preview-thumb">
-            {cover && <img src={cover.thumbUrl || cover.url} alt="" />}
-          </span>
+          {/* Không có bìa (địa điểm giữ riêng sạch ảnh) thì bỏ hẳn ô ảnh —
+              một khung xám rỗng trông như ảnh hỏng chứ không như ý đồ. */}
+          {cover && (
+            <span className="preview-thumb">
+              <img src={cover.thumbUrl || cover.url} alt="" />
+            </span>
+          )}
           <span className="preview-text">
             <strong className="preview-name">{stop.name}</strong>
             <span className="preview-place">
@@ -53,7 +57,7 @@ export function StopPreviewCard({
             </button>
             <a
               className="btn-secondary"
-              href={directionsUrl(stop.lat, stop.lng, stop.name)}
+              href={directionsUrl(stop.lat, stop.lng)}
               target="_blank"
               rel="noreferrer">
               Chỉ đường
@@ -65,7 +69,7 @@ export function StopPreviewCard({
             <div className="preview-actions">
               <a
                 className="btn-secondary wide"
-                href={directionsUrl(stop.lat, stop.lng, stop.name)}
+                href={directionsUrl(stop.lat, stop.lng)}
                 target="_blank"
                 rel="noreferrer">
                 Chỉ đường

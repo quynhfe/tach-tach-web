@@ -6,10 +6,15 @@
 const isIos = () =>
   typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent)
 
-/** URL chỉ đường tới một toạ độ, chọn theo hệ điều hành người xem. */
-export function directionsUrl(lat: number, lng: number, label?: string) {
+/**
+ * URL chỉ đường tới một toạ độ, chọn theo hệ điều hành người xem.
+ *
+ * Đích LUÔN là toạ độ, không kèm tên: `destination` chỉ được xuất hiện một lần —
+ * đưa thêm một cái nữa mang tên địa điểm thì Google lấy CÁI CUỐI, và một cái tên
+ * chung chung ("Quán cà phê") sẽ dẫn tới chỗ hoàn toàn khác.
+ */
+export function directionsUrl(lat: number, lng: number) {
   const dest = `${lat},${lng}`
   if (isIos()) return `https://maps.apple.com/?daddr=${dest}&dirflg=d`
-  const query = label ? `&destination=${encodeURIComponent(label)}` : ''
-  return `https://www.google.com/maps/dir/?api=1&destination=${dest}${query}&travelmode=driving`
+  return `https://www.google.com/maps/dir/?api=1&destination=${dest}&travelmode=driving`
 }
